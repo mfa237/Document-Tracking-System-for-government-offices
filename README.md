@@ -83,7 +83,7 @@ The DTS is a web-based, mobile-friendly solution. It uses Node js with Express m
 * Go to that directory and run `DEBUG=dts:* npm run devstart`
 * In your browser, type http://localhost:3000 which will take you to the home page. It is actually a login page. Enter login password and you are good to go!
 
-i## References
+## References
 * [Node js, express, Mongodb and pug tutorial with a working example](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs)
 * [Jquery and Ajax tutorial](https://www.w3schools.com/jquery/default.asp)
 * [Ajax tutorial](https://www.w3schools.com/js/js_ajax_intro.asp)
