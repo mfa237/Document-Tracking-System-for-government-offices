@@ -1,8 +1,11 @@
 # Light-weight Document Tracking System (DTS) for Government Offices
 ## Need for DTS
 Imagine a Flipkart or an Amazon if they are unable to track where their packages are! What will happen to their service delivery? And customer satisfaction? Total mess, won’t it be?
+
 Government is in the business of delivering services. Its shipments are its papers - daks (communication which comes from outside an office) and files (communication which happens within an office). And sadly, there is no easy mechanism to track any paper once it comes. It is basic wisdom that what doesn't get tracked in organizations, doesn't get done or is delayed. Of course, there are encyclopedial amounts of prescribed registers and equally voluminous rules about how to maintain them. But the reality of most field level government offices is – they are understaffed, one clerk holds multiple charges and the officer is overworked... They are supposed to have 10 clones. So none of the routine office management happens and most of the time they are indulged in firefighting mode. 
+
 Things which are supposed to happen in routine happen only when a nudge comes in form of a call from superior office or politician or a notice from a court or commission or the person himself comes 3-4 times. And even when that happens, there is no ready mechanism to track what happened to the grievance which this old man had given 2 months back or the inquiry report the superior office had asked for 4 months back. The officer has to ask her clerk who tells either from his memory only or hurriedly searches for in his papers and files. Inevitably, many times the paper is either missing or lying unattended on some table. Then the fire-fighting begins and by the time this fire is doused some another begins. 
+
 So what is needed is a mechanism to constantly follow-up things. Instead of following up only when that nudge comes, if follow up happens in routine, then things will get done in routine. And that is when maximum number of common people will get relief. The only thing which is needed is to make the follow-up mechanism easy and quick. Hence the need for DTS.
 
 ## The Guiding Principles
@@ -34,6 +37,7 @@ To be successful, the solution has to follow certain guiding principles apart fr
 ![Government Office Structure](/public/images/govt_office.png)
 
 A government office is organized heirarchy wise. At the top, there is an officer who is the Head of Office (HoO). Under him, there are many 'sections'. A section cann be thought of as a mini-department. Each section has a clerk and an officer in-charge (OIC) and deals with a particular type of matters. For example, there might be a section to deal with BPL appeals. 
+
 It is very common that due to sever shortage of manpower, one clerk might be holding the charge of multiple sections and there might be no separate OICs, the HoO might be the OIC of all sections. But at a conceptual level, the office structure is like the one mentioned above.
 
 ## Workflow in Government Offices
@@ -79,7 +83,7 @@ The DTS is a web-based, mobile-friendly solution. It uses Node js with Express m
 * Go to that directory and run `DEBUG=dts:* npm run devstart`
 * In your browser, type http://localhost:3000 which will take you to the home page. It is actually a login page. Enter login password and you are good to go!
 
-## References
+i## References
 * [Node js, express, Mongodb and pug tutorial with a working example](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs)
 * [Jquery and Ajax tutorial](https://www.w3schools.com/jquery/default.asp)
 * [Ajax tutorial](https://www.w3schools.com/js/js_ajax_intro.asp)
