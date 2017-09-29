@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  .jumbotron.text-center
+    .container-fluid.text-center
+      h2 Welcome #{user.name}
+      h4 You are #{user.username}
+    if user.superadmin
+      .row
+        .col-sm-6
+          span.glyphicon.glyphicon-user
+          h4 
+            a(href='/db/users?token=' + token) User Management
+          p Add/Delete/Update a user here
+        .col-sm-6
+          span.glyphicon.glyphicon-king
+          h4 
+            a(href='/db/authorities?token=' + token) Authority Management
+          p Add/Delete/Update an authority here
+      br
+      .row
+        .col-sm-6
+          span.glyphicon.glyphicon-hourglass
+          h4 
+            a(href='/reports/pendency?token=' + token) Pendency Monitoring
+          p View section/office pendency here
+        .col-sm-6
+          span.glyphicon.glyphicon-folder-open
+          h4 
+            a(href='/reports?token=' + token) Reports
+          p View other reports here
+    else
+      br
+      p Click on the links below to manage your sections
+      each authority in user.authorities
+        .row
+          .col-sm-12
+            h4 
+              a(href=authority.url + '?token=' + token) #{authority.name}
+        br
+

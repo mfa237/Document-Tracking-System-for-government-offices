@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    .jumbotron.text-center
+        h1 Document Tracking System
+        p We increase productivity
+        form(method='POST' action='/')
+          div.form-group
+            input#username.form-control(type='text', name='username' size='30' placeholder='Username' value=(undefined===user ? '' : user.username) required='true')
+          div.form-group
+            input#password.form-control(type='password', name='password' size='30', placeholder='Password' value=(undefined===user ? '' : user.password) required='true')
+            .input-group-btn
+          button.btn.btn-primary(type='submit') Submit
+        if errors 
+          ul
+            for error in errors
+              li!= error.msg
+

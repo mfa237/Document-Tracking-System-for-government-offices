@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  script.
+    $(function () {
+    $('[id^=name_]').dblclick(function () {
+    var OriginalContent = $(this).text();
+    $(this).addClass("cellEditing");
+    $(this).css("color", "#000000");
+    $(this).html("<input type='text' value='" + OriginalContent + "' />");
+    $(this).children().first().focus();
+    $(this).children().first().keypress(function (e) {
+    if (e.which == 13) {
+    var newContent = $(this).val();
+    var row_index = $(this).closest("tr").index();
+    $("#p1").text(newContent);
+    $(this).parent().text(newContent);
+    $(this).parent().removeClass("cellEditing");
+    }
+    });
+    $(this).children().first().blur(function(){
+    $(this).parent().text(OriginalContent);
+    $(this).parent().removeClass("cellEditing");
+    });
+    });
+    });
+
+  .jumbotron.text-center
+    .container-fluid.text-center
+      p#p1 hello #{title} 
+      table.table.table-bordered(id="user_table")      
+        thead
+          tr
+            th 
+              input#checkAll.check(type='checkbox')
+            th User
+            th Authorities
+            th Admin
+            th Actions
+        tbody
+          each user, index in user_list
+            tr
+              div.form-group
+                td 
+                  input.check(type='checkbox')
+                td(id="name_"+index) #{user.name}
+                td(id="authorities_"+index class="userauthorities")
+                  ul
+                  each authority in user.authorities
+                    li=authority.name
+                td(id="su_"+index class="useradminstatus") #{user.superadmin}
+                td 
+                  button.btn-link(id="editglyph_"+index type="submit") Edit
+                  button.btn-link.span.glyphicon.glyphicon-floppy-disk(id="saveglyph_"+index onclick="user_save(index, token)" visibility="hidden")
+                  button.btn-link.span.glyphicon.glyphicon-trash(onclick="delete_user(index, token)")
+
