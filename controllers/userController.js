@@ -1,6 +1,8 @@
 var User = require('../models/user');
 var Authority = require('../models/authority');
 
+var async = require('async');
+
 // Display list of all Users
 exports.user_list = function(req, res) {
     console.log('inside userController.user_list');
@@ -48,5 +50,27 @@ exports.user_update_get = function(req, res) {
 
 // Handle User update on POST
 exports.user_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: User update POST');
+    console.log("inside user controller.update_post with request as "+ req);
+    var auth_name_array = req.body.authorities.split(",");
+    var auth_id_array = [];
+    async.series([
+      function(){
+        for (var i = 0; i < auth_name_array.length; i++){
+          Authority.find({'name': auth_name_array[i]}, '_id')
+          .exec(function(err, authId){
+          if (err) throw err;
+          console.log("authId: " + authId);
+          auth_id_array.push(authId);
+          });
+        }
+      },
+      function(){
+        console.log("here to update the record");
+        User.findByIdAndUpdate(req.body.userId, {$set: {name: req.body.userName, superadmin: req.body.superadmin, authorities: auth_id_array}}, function(err, result){
+          if (err) throw err;
+          res.send(result);
+        });
+      }
+    ]);  
+    
 };

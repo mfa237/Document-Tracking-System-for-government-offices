@@ -3,28 +3,88 @@ extends layout
 block content
   script.
     $(function () {
-    $('[id^=name_]').dblclick(function () {
-    var OriginalContent = $(this).text();
-    $(this).addClass("cellEditing");
-    $(this).css("color", "#000000");
-    $(this).html("<input type='text' value='" + OriginalContent + "' />");
-    $(this).children().first().focus();
-    $(this).children().first().keypress(function (e) {
-    if (e.which == 13) {
-    var newContent = $(this).val();
-    var row_index = $(this).closest("tr").index();
-    $("#p1").text(newContent);
-    $(this).parent().text(newContent);
-    $(this).parent().removeClass("cellEditing");
-    }
+      $('[id^=editglyph_]').click(function () { // function to run when edit icon is clicked
+        var row = $(this).closest("tr").index(); // extracting row value where edit icon was clicked
+        var token = '#{token}'; // extracting token value for communicating with the database via ajax
+        $(this).hide(); // hiding the edit icon
+        $("#saveglyph_"+row).show(); // displaying the save icon
+        // Storing original values of the cells
+        var originalName = $("#name_"+row).text(); // storing original value in name field
+        var originalAuth = ""; 
+        $("#authorities_"+row+" li").each(function(i, li){originalAuth+=$(li).text()+",";}); // storing original authorities in an array
+        originalAuth = originalAuth.slice(0,-1); // removing the , which would be there as last characted
+        var originalSu = $("#su_"+row).text(); // storing the admin status
+        // Setting properties of name cell as an input text field
+        $("#name_"+row).addClass("cellEditing");
+        $("#name_"+row).css("color", "#000000");
+        $("#name_"+row).html("<input type='text' id=edit_name_" + row + " value='" + originalName + "' />"); 
+        $("#name_"+row).children().first().focus(); // setting the cursor on the name cell after edit icon is clicked
+        // Setting properties of the authorities cell as a checkbox collection of available authorities
+        $("#authorities_"+row).addClass("cellEditing");
+        $("#authorities_"+row).css("color", "#000000");
+        // get authorities list from the database to be displayed in each checkbox
+        $.get("/db/authorities?token="+token+"&type=json", function(data, status){
+          var html = "<div id=\"authorities_container_" + row + "\">";
+          $.each(data, function(index, value){
+            if(originalAuth.includes(value.name)){ // checkboxes corresponding to original authorities of the user should appear as checked
+              html = html + "<input type=\"checkbox\" value=\"" + value.name + "\" checked/> "+value.name+"<br />"; 
+            }else{ // checkboxes corresponding to authorities which are not the original authorities of the user should appear as unchecked
+              html = html + "<input type=\"checkbox\" value=\"" + value.name + "\" /> "+value.name+"<br />"; 
+            }
+          });
+          html = html + "</div>"
+          $("#authorities_"+row).html(html); // setting the display
+        });
+        // Setting properties of the admin cell. It should show a radio button group to select from
+        $("#su_"+row).addClass("cellEditing");
+        $("#su_"+row).css("color", "#000000");
+        if (originalSu === 'true'){ // then by default true should appear as checked
+          $("#su_"+row).html("<input type='radio' name='admin_" + row + "' value='true' checked> true <br> <input type='radio' name='admin_" + row + "' value='false'> false");
+        } else{ // then by default false should appear as checked
+          $("#su_"+row).html("<input type='radio' name='admin_" + row + "' value='true'> true <br> <input type='radio' name='admin_" + row + "' value='false' checked> false");
+        }
+      });
     });
-    $(this).children().first().blur(function(){
-    $(this).parent().text(OriginalContent);
-    $(this).parent().removeClass("cellEditing");
+    $(function(){
+      $('[id^=saveglyph_]').click(function () { // function to run when save icon is clicked
+        var row = $(this).closest("tr").index(); // first we get the corresponding row value
+        var token = '#{token}'; // Getting token for database operations
+        $(this).hide(); // hiding save icon
+        $("#editglyph_"+row).show(); // displaying the edit icon
+        var user_id = $("#id_"+row).text(); // Getting user id for database operations
+        var user_name = $("#edit_name_"+row).val(); // Getting user name for database operations 
+        // Setting properties of the name cell to original table cell format containing updated values
+        $("#name_"+row).removeClass("cellEditing");
+        $("#name_"+row).css({"color":"#ffffff"});
+        $("#name_"+row).html("<td id=name_" + row + ">"+ user_name+"</td>");
+        // Setting properties of authorities cell to original table cell format containing updated values
+        var auth_list = $("#authorities_container_" + row + " :checkbox:checked").map(function(){
+          return $(this).val();
+        }).toArray(); // first capturing all selected authorities in an array called auth_list       
+        // Now setting back the authorities cell to original look
+        $("#authorities_"+row).removeClass("cellEditing");
+        $("#authorities_"+row).css({"color":"#ffffff"});
+        var html = "<td id=\"authorities_" + row + "\"><ul>";
+        jQuery.each(auth_list, function(index, value){
+          html = html + " <li>"+value;
+        }); // displaying each selected authority as a list item
+        html = html + " </ul></td>"
+        $("#authorities_"+row).html(html); // now the authorities cell has been setup and values extracted
+        // time to set the admin status cell
+        var admin_status = $("input[name=admin_" + row + "]:checked").val(); // storing the value of the checked radio button
+        $("#su_"+row).removeClass("cellEditing");
+        $("#su_"+row).css({"color":"#ffffff"});
+        $("#su_"+row).html("<td id=\"su_"+row+"\">" + admin_status + "</td>"); // setting the cell html
+        // Now we have all the values to do a database operation.
+        var url = "/db/users/edit?token=" + token; // constructing the url for post operation
+        var params = {"token": token, "userId": user_id, "userName": user_name, "authorities": auth_list.toString(), "superadmin": admin_status};
+        //alert("url: " + url + ", userId: " + user_id + ", userName: " + user_name + ", authorities: " + auth_list[0] + ", superadmin: " + admin_status); // constructing the params for post operation
+        $.post(url, params, function(data, status){
+          alert(data);
+        });
+        
+      });
     });
-    });
-    });
-
   .jumbotron.text-center
     .container-fluid.text-center
       p#p1 hello #{title} 
@@ -44,13 +104,14 @@ block content
                 td 
                   input.check(type='checkbox')
                 td(id="name_"+index) #{user.name}
-                td(id="authorities_"+index class="userauthorities")
+                td(id="authorities_"+index)
                   ul
                   each authority in user.authorities
                     li=authority.name
-                td(id="su_"+index class="useradminstatus") #{user.superadmin}
+                td(id="su_"+index) #{user.superadmin}
                 td 
-                  button.btn-link(id="editglyph_"+index type="submit") Edit
-                  button.btn-link.span.glyphicon.glyphicon-floppy-disk(id="saveglyph_"+index onclick="user_save(index, token)" visibility="hidden")
-                  button.btn-link.span.glyphicon.glyphicon-trash(onclick="delete_user(index, token)")
+                  button.btn-link.span.glyphicon.glyphicon-pencil(id="editglyph_"+index)
+                  button.btn-link.span.glyphicon.glyphicon-floppy-disk(id="saveglyph_"+index style='display: none;')
+                  button.btn-link.span.glyphicon.glyphicon-trash(id="deleteglyph_"+index)
+                  .userid(id="id_"+index style='display: none;') #{user.id}
 

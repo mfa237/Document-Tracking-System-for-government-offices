@@ -55,6 +55,11 @@ body {
       color: #f4511e;
       font-size: 200px;
       }
+      .authorities_container{ 
+        width:parent.width; 
+        height:75px; 
+        overflow-y:scroll;
+      }
       .thumbnail {
       padding: 0 0 15px 0;
       border: none;

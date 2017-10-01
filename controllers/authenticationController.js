@@ -37,7 +37,7 @@ exports.authenticate = function(req, res){
 	      if (err) {
 		return res.send({ success: false, message: 'Failed to create token.' });
 	      } else{
- 		console.log('token created is: '+token);
+ 		//console.log('token created is: '+token);
         	res.render('dashboard', {user: user, token: token});
 	      }
 	    });	
@@ -54,7 +54,7 @@ exports.authenticate = function(req, res){
 exports.validateToken = function(req, res, next){
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  console.log('Inside validate token with token as: ' + token);
+  //console.log('Inside validate token with token as: ' + token);
 
   // decode token
   if (token) {
@@ -66,7 +66,7 @@ exports.validateToken = function(req, res, next){
       } else {
         // if everything is good, save to request for use in other routes
         req.decoded = decodedToken;
-	console.log('Token is valid and decoded as ' + decodedToken.sub);    
+	//console.log('Token is valid and decoded as ' + decodedToken.sub);    
         next();
       }
     });

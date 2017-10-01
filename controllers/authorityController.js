@@ -2,7 +2,13 @@ var Authority = require('../models/authority');
 
 // Display list of all Authorities
 exports.authority_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: Authority list');
+    //console.log('inside authorityController.authority_list');
+    Authority.find({}, 'name')
+    .exec(function (err, list_authorities){
+        if (err) throw err;
+        //console.log(list_authorities);
+        res.send(list_authorities);
+    });
 };
 
 // Display detail page for a specific Authority
