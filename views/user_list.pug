@@ -77,8 +77,7 @@ block content
         $("#su_"+row).html("<td id=\"su_"+row+"\">" + admin_status + "</td>"); // setting the cell html
         // Now we have all the values to do a database operation.
         var url = "/db/users/edit?token=" + token; // constructing the url for post operation
-        var params = {"token": token, "userId": user_id, "userName": user_name, "authorities": auth_list.toString(), "superadmin": admin_status};
-        //alert("url: " + url + ", userId: " + user_id + ", userName: " + user_name + ", authorities: " + auth_list[0] + ", superadmin: " + admin_status); // constructing the params for post operation
+        var params = {"token": token, "userId": user_id, "userName": user_name, "authorities": auth_list.toString(), "superadmin": admin_status}; // constructing the params for post operation
         $.post(url, params, function(data, status){
           alert(data);
         });
