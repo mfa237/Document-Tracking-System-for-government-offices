@@ -52,22 +52,10 @@ exports.user_update_get = function(req, res) {
 exports.user_update_post = function(req, res) {
     console.log("inside user controller.update_post");
     /* We have a mongoose schema User which has an attribute called authorities[] i.e. each user can hold multiple authorities. Each Authority has an id and a name. Here we want to update a user info. We have received the updated values in a POST request from the client webpage. We want to find the user and then update its values in the database with the client provided values. */
-    var auth_name_array = req.body.authorities.split(","); // We get the authority names in a string in req.body.authorities and split it on commas here
-    var auth_id_array = []; // We want to find the corresponding authority ids. We will use this array to store them in. We want to store all authority ids in this array and only then pass the full array on to the updateuser function that is why using async.forEach
-    async.forEach(auth_name_array, function(auth_name, callback){
-      Authority.find({'name': auth_name}, '_id', function(err, authId){ // We find the corresponding authority in the database and return its id
-          if (err) res.send(err);
-          console.log("authId: " + authId); // The id is fetching properly and output is good
-          auth_id_array.push(authId); // We store the id in our array
-          console.log("auth_id_array.length is now " + auth_id_array.length); // The id is added properly and array length is incrementing by 1 with each push
-          });      
-      callback();
-    }, function(err){
-      if (err) res.send(err);
-      console.log("here to update the record with auth_id_array.length as " + auth_id_array.length); // However, here array length is shown as 0 and the authorities supplied by client are not getting updated in database. This part of the code is seeing an empty array
-      User.findByIdAndUpdate(req.body.userId, {$set: {name: req.body.userName, superadmin: req.body.superadmin, authorities: auth_id_array}}, function(err, result){
-        if (err) res.send(err);
+    var auth_id_array = req.body.authorities.split(","); // We get the authority ids in a string in req.body.authorities and split it on commas here
+    User.findByIdAndUpdate(req.body.userId, {$set: {name: req.body.userName, superadmin: req.body.superadmin, authorities: auth_id_array}}, function(err, result){
+        if (err) {console.log("Erroring.");return res.send(err);}
+        console.log("After findByIdAndUpdate result._id: " + result._id);
         res.send(result);
       });
-    });
 };

@@ -3,7 +3,7 @@ var Authority = require('../models/authority');
 // Display list of all Authorities
 exports.authority_list = function(req, res) {
     //console.log('inside authorityController.authority_list');
-    Authority.find({}, 'name')
+    Authority.find({})
     .exec(function (err, list_authorities){
         if (err) throw err;
         //console.log(list_authorities);

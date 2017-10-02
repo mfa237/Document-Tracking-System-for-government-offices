@@ -27,9 +27,9 @@ block content
           var html = "<div id=\"authorities_container_" + row + "\">";
           $.each(data, function(index, value){
             if(originalAuth.includes(value.name)){ // checkboxes corresponding to original authorities of the user should appear as checked
-              html = html + "<input type=\"checkbox\" value=\"" + value.name + "\" checked/> "+value.name+"<br />"; 
+              html = html + "<input type=\"checkbox\" value=\"" + value._id + "\" name = \"" + value.name + "\" checked/> "+value.name+"<br />"; 
             }else{ // checkboxes corresponding to authorities which are not the original authorities of the user should appear as unchecked
-              html = html + "<input type=\"checkbox\" value=\"" + value.name + "\" /> "+value.name+"<br />"; 
+              html = html + "<input type=\"checkbox\" value=\"" + value._id + "\" name = \"" + value.name + "\" /> "+value.name+"<br />"; 
             }
           });
           html = html + "</div>"
@@ -61,11 +61,14 @@ block content
         var auth_list = $("#authorities_container_" + row + " :checkbox:checked").map(function(){
           return $(this).val();
         }).toArray(); // first capturing all selected authorities in an array called auth_list       
+        var auth_name_list = $("#authorities_container_" + row + " :checkbox:checked").map(function(){
+          return $(this).attr("name");
+        }).toArray(); // first capturing all selected authorities in an array called auth_list       
         // Now setting back the authorities cell to original look
         $("#authorities_"+row).removeClass("cellEditing");
         $("#authorities_"+row).css({"color":"#ffffff"});
         var html = "<td id=\"authorities_" + row + "\"><ul>";
-        jQuery.each(auth_list, function(index, value){
+        jQuery.each(auth_name_list, function(index, value){
           html = html + " <li>"+value;
         }); // displaying each selected authority as a list item
         html = html + " </ul></td>"
