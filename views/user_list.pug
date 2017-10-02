@@ -10,6 +10,7 @@ block content
         $("#saveglyph_"+row).show(); // displaying the save icon
         // Storing original values of the cells
         var originalName = $("#name_"+row).text(); // storing original value in name field
+        var originalMobile = $("#mobile_"+row).text(); // storing original value in mobile field
         var originalAuth = ""; 
         $("#authorities_"+row+" li").each(function(i, li){originalAuth+=$(li).text()+",";}); // storing original authorities in an array
         originalAuth = originalAuth.slice(0,-1); // removing the , which would be there as last characted
@@ -19,6 +20,10 @@ block content
         $("#name_"+row).css("color", "#000000");
         $("#name_"+row).html("<input type='text' id=edit_name_" + row + " value='" + originalName + "' />"); 
         $("#name_"+row).children().first().focus(); // setting the cursor on the name cell after edit icon is clicked
+        // Setting properties of mobile number field now
+        $("#mobile_"+row).addClass("cellEditing");
+        $("#mobile_"+row).css("color", "#000000");
+        $("#mobile_"+row).html("<input type='text' id=edit_mobile_" + row + " value='" + originalMobile + "' />"); 
         // Setting properties of the authorities cell as a checkbox collection of available authorities
         $("#authorities_"+row).addClass("cellEditing");
         $("#authorities_"+row).css("color", "#000000");
@@ -53,10 +58,14 @@ block content
         $("#editglyph_"+row).show(); // displaying the edit icon
         var user_id = $("#id_"+row).text(); // Getting user id for database operations
         var user_name = $("#edit_name_"+row).val(); // Getting user name for database operations 
-        // Setting properties of the name cell to original table cell format containing updated values
+        var user_mobile = $("#edit_mobile_"+row).val(); // Getting user mobile no for database operations 
+        // Setting properties of the name and mobile number cell to original table cell format containing updated values
         $("#name_"+row).removeClass("cellEditing");
+        $("#mobile_"+row).removeClass("cellEditing");
         $("#name_"+row).css({"color":"#ffffff"});
+        $("#mobile_"+row).css({"color":"#ffffff"});
         $("#name_"+row).html("<td id=name_" + row + ">"+ user_name+"</td>");
+        $("#mobile_"+row).html("<td id=mobile_" + row + ">"+ user_mobile+"</td>");
         // Setting properties of authorities cell to original table cell format containing updated values
         var auth_list = $("#authorities_container_" + row + " :checkbox:checked").map(function(){
           return $(this).val();
@@ -80,13 +89,28 @@ block content
         $("#su_"+row).html("<td id=\"su_"+row+"\">" + admin_status + "</td>"); // setting the cell html
         // Now we have all the values to do a database operation.
         var url = "/db/users/edit?token=" + token; // constructing the url for post operation
-        var params = {"token": token, "userId": user_id, "userName": user_name, "authorities": auth_list.toString(), "superadmin": admin_status}; // constructing the params for post operation
+        var params = {"token": token, "userId": user_id, "userName": user_name, "userMobile":user_mobile, "authorities": auth_list.toString(), "superadmin": admin_status}; // constructing the params for post operation
         $.post(url, params, function(data, status){
           alert(data);
         });
-        
       });
     });
+    $(function(){
+      $('[id^=deleteglyph_]').click(function () { // function to run when delete icon is clicked
+        var row = $(this).closest("tr").index(); // first we get the corresponding row value
+        var token = '#{token}'; // Getting token for database operations
+        var user_id = $("#id_"+row).text(); // Getting user id for database operations
+        // Now we have all required variables. We can delete the user via ajax call
+        var url = "/db/users/delete?token=" + token; // constructing the url for the post call
+        var params = {"token": token, "userId": user_id}; // constructing the params for the post call
+        $.post(url, params, function(data, status){
+          // This code will be executed when the delete is successful. Simply hide the row
+          $("#tr_"+row).hide();
+        })
+      });
+    });
+                                          
+
   .jumbotron.text-center
     .container-fluid.text-center
       p#p1 hello #{title} 
@@ -96,16 +120,18 @@ block content
             th 
               input#checkAll.check(type='checkbox')
             th User
+            th Mobile
             th Authorities
             th Admin
             th Actions
         tbody
           each user, index in user_list
-            tr
+            tr(id="tr_"+index)
               div.form-group
                 td 
                   input.check(type='checkbox')
                 td(id="name_"+index) #{user.name}
+                td(id="mobile_"+index) #{user.mobileNo}
                 td(id="authorities_"+index)
                   ul
                   each authority in user.authorities

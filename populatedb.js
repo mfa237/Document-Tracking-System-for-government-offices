@@ -64,7 +64,7 @@ function authorityCreate(name, cb) {
 function createUsers(cb) {
     async.parallel([
         function(callback) {
-          userCreate('Dummy', 'dummy', 'dummy', ["59c4ea3efaebb61c19af9432"], 7568597500, true, callback);
+          userCreate('Mummy', 'mummy', 'mummy', ["59c4ea3efaebb61c19af9432"], 7568597500, true, callback);
         }
         ],
         // optional callback

@@ -6,7 +6,7 @@ var async = require('async');
 // Display list of all Users
 exports.user_list = function(req, res) {
     console.log('inside userController.user_list');
-    User.find({}, 'name authorities superadmin')
+    User.find({}, 'name mobileNo authorities superadmin')
     .populate('authorities')
     .exec(function (err, list_users){
         if (err) throw err;
@@ -39,7 +39,7 @@ exports.user_delete_post = function(req, res) {
     console.log('Inside user_delete_post with userId: ' + req.body.userId);
     User.findByIdAndRemove(req.body.userId, function (err, results){
 	if (err) throw err;
-	res.redirect('/db/users?token='+req.body.token);
+	res.send(results);
     });
 };
 
@@ -53,7 +53,7 @@ exports.user_update_post = function(req, res) {
     console.log("inside user controller.update_post");
     /* We have a mongoose schema User which has an attribute called authorities[] i.e. each user can hold multiple authorities. Each Authority has an id and a name. Here we want to update a user info. We have received the updated values in a POST request from the client webpage. We want to find the user and then update its values in the database with the client provided values. */
     var auth_id_array = req.body.authorities.split(","); // We get the authority ids in a string in req.body.authorities and split it on commas here
-    User.findByIdAndUpdate(req.body.userId, {$set: {name: req.body.userName, superadmin: req.body.superadmin, authorities: auth_id_array}}, function(err, result){
+    User.findByIdAndUpdate(req.body.userId, {$set: {name: req.body.userName, superadmin: req.body.superadmin, mobileNo: req.body.userMobile, authorities: auth_id_array}}, function(err, result){
         if (err) {console.log("Erroring.");return res.send(err);}
         console.log("After findByIdAndUpdate result._id: " + result._id);
         res.send(result);
