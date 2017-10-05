@@ -109,27 +109,81 @@ block content
         })
       });
     });
+    $(function(){
+      $("#cb_all").click(function(){ // function to implement the select all feature
+        $(".cb").prop('checked', $(this).prop('checked'));
+      });
+    });
+    $(function(){
+      $("#addglyph").click(function(){ // function to implement the add user feature
+        var token = '#{token}'; // extracting token value for communicating with the database via ajax
+        var html = "<form id=\"addUserForm\" method=\"POST\" action=\"/db/users/create?token=" + token + "\"><h3>New User Registration Form</h3> <hr/><br/> <label>Name : </label> <input type=\"text\" id=\"name\" placeholder=\"Ex -John Smith\"/><br/> <br/> <label>Mobile No. : </label> <input type=\"text\" id=\"mobile\" placeholder=\"9999999999\"/><br/>";
+        // get authorities list from the database to be displayed in each checkbox
+        $.get("/db/authorities?token="+token+"&type=json", function(data, status){
+          html = html + "<div id=\"authorities_container\"> <label> Authorities : </label>";
+          $.each(data, function(index, value){
+              html = html + "<input type=\"checkbox\" value=\"" + value._id + "\" name = \"" + value.name + "\" /> " + value.name; 
+          });
+        html = html + "</div> <br/> <label>Admin status :</label> <input type='radio' name='admin' value='true'> true <input type='radio' name='admin' value='false' checked> false <br/><input type=\"button\" id=\"submitbtn\" value=\"Submit\"/> <input type=\"button\" id=\"cancel\" value=\"Cancel\"/> <br/></form>";
+        $("#popupform").html(html); // Setting the html of the popup form div
+        $("#popupform").css({"display":"block", "color":"#000000"});
+        $("#defaultdisplay").hide(); // Hiding the default page view
+        });
+      });
+    });
                                           
 
   .jumbotron.text-center
     .container-fluid.text-center
-      p#p1 hello #{title} 
-      table.table.table-bordered(id="user_table")      
-        thead
-          tr
-            th 
-              input#checkAll.check(type='checkbox')
-            th User
-            th Mobile
-            th Authorities
-            th Admin
-            th Actions
-        tbody
-          each user, index in user_list
-            tr(id="tr_"+index)
-              div.form-group
+      #defaultdisplay(style='display:block;')
+        p#p1 hello #{title} 
+        .row
+          button.btn.btn-info.btn-lg(type='button', data-toggle='modal', data-target='#addUser') Add User
+          // Modal
+          #addUser.modal.fade(role='dialog')
+            .modal-dialog
+              // Modal content
+              .modal-content
+                .modal-header
+                  button.close(type='button', data-dismiss='modal') ×
+                  h4.modal-title Modal Header
+                .modal-body
+                  .container-fluid.text-center
+                    h2(color='#000000') New User Registration
+                    form.form-horizontal(method='POST' action='/db/users/create?token='+token)
+                      .form-group
+                        label.control-label.col-sm-4(for='name') Name:
+                        .col-sm-8
+                          input#name.form-control(type='text', placeholder='Enter name', name='name')
+                      .form-group
+                        label.control-label.col-sm-4(for='username') Username:
+                        .col-sm-8
+                          input#username.form-control(type='text', placeholder='Enter username', name='username')
+                      .form-group
+                        label.control-label.col-sm-4(for='authorities') Authorities:
+                        .col-sm-8
+                          #authorities.form-control
+                      .form-group
+                        .col-sm-offset-2.col-sm-10
+                          button.btn.btn-default(type='submit') Submit
+                .modal-footer
+                  button.btn.btn-default(type='button', data-dismiss='modal') Close
+          button.btn-link(id="delglyph") Delete Selected
+        table.table.table-bordered(id="user_table")      
+          thead
+            tr
+              th 
+                input.check(type='checkbox', id='cb_all')
+              th User
+              th Mobile
+              th Authorities
+              th Admin
+              th Actions
+          tbody
+            each user, index in user_list
+              tr(id="tr_"+index)
                 td 
-                  input.check(type='checkbox')
+                  input.check(type='checkbox', value=user.id, id='cb_'+index, class='cb')
                 td(id="name_"+index) #{user.name}
                 td(id="mobile_"+index) #{user.mobileNo}
                 td(id="authorities_"+index)
@@ -142,4 +196,3 @@ block content
                   button.btn-link.span.glyphicon.glyphicon-floppy-disk(id="saveglyph_"+index style='display: none;')
                   button.btn-link.span.glyphicon.glyphicon-trash(id="deleteglyph_"+index)
                   .userid(id="id_"+index style='display: none;') #{user.id}
-

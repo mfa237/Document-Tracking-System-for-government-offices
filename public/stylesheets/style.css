@@ -3,6 +3,9 @@ body {
       line-height: 1.8;
       color: #818181;
       }
+      label.control-label{
+	  color: #000000;
+      }
       h2 {
       font-size: 24px;
       text-transform: uppercase;
@@ -26,22 +29,22 @@ body {
       .container-fluid {
       padding: 60px 50px;
       }
-      .col-sm-6{
+      .userpage.col-sm-6{
       background-color: #f1833b;
       }
-      .col-sm-1{
+      .userpage.col-sm-1{
       background-color: #f1833b;
       }
-      .col-sm-2{
+      .userpage.col-sm-2{
       background-color: #f1833b;
       }
-      .col-sm-3{
+      .userpage.col-sm-3{
       background-color: #f1833b;
       }
-      .col-sm-12{
+      .userpage.col-sm-12{
       background-color: #f1833b;
       }
-      .col-sm-4{
+      .userpage.col-sm-4{
       background-color: #f1833b;
       }
       .bg-grey {
