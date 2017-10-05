@@ -6,6 +6,7 @@ var authentication_controller = require('../controllers/authenticationController
 /* GET home page. */
 router.get('/', function(req, res, next) {
   //console.log(req.query.errors);
+
   res.render('index', { title: 'DTS', errors: [{msg: req.query.errors}] });
 });
 

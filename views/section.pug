@@ -8,8 +8,8 @@ block content
       .row
         .col-sm-6.col-sm-offset-3
           p
-          if inward
-           form(method='POST', action='')
+          if user.inward
+           form(method='POST', action="/section/authorities/"+id+"?token="+token)
             .form-group
               label(for='inwardID') Inward ID
               input#inwardID.form-control(type='text', placeholder='20/2017', name='InwardID')
@@ -34,7 +34,7 @@ block content
             center
               button.btn.btn-danger(type='submit') Submit
           else
-          form(action='', method='POST')
+          form(action="/section/authorities/"+id+"?token="+token, method='POST')
             .form-group
               label(for='uniqueID') Unique ID
               input#inwardID.form-control(type='text', placeholder='20/2017', name='InwardID')

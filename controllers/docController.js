@@ -13,7 +13,7 @@ exports.doc_detail = function(req, res) {
 // Display Doc create form on GET
 exports.doc_create_get = function(req, res) {
     //res.send('NOT IMPLEMENTED: Doc create GET');
-    res.render("../views/section.pug",{inward:req.decoded.inward});  // Display the form for ceating the inward log.
+    res.render("../views/section.pug",{user:req.decoded,token:req.query.token,id:req.params.id});  // Display the form for ceating the inward log.
 };
 
 // Handle Doc create on POST

@@ -12,13 +12,23 @@ var sectionRouter = require('./routes/section');
 var app = express();
 
 //Set up mongoose connection
+const {MongoClient} = require("MongoDB");
 var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
 var mongoDB = 'mongodb://dtsserver:aadhar@ds017432.mlab.com:17432/uidbaseddts';
-mongoose.connect(mongoDB);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-autoIncrement.initialize(db);
+
+//Connection using MongoClient object of MongoDB to remove deprecation warning
+MongoClient.connect(mongoDB,function(err,db)
+{
+  if(err)
+     console.log(err);
+  else
+    console.log("Connection Successfull");
+})
+// mongoose.connect(mongoDB);
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// autoIncrement.initialize(db);
 
 
 // view engine setup
