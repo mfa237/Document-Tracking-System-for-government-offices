@@ -1,0 +1,63 @@
+//- This file displays the inward or dealing form after checking whether the inward field in user.js is true.
+//- docController.js controls this file.
+
+extends layout
+
+block content
+    .container
+      .row
+        .col-sm-6.col-sm-offset-3
+          p
+          if inward
+           form(method='POST', action='')
+            .form-group
+              label(for='inwardID') Inward ID
+              input#inwardID.form-control(type='text', placeholder='20/2017', name='InwardID')
+            .form-group
+              label(for='receivingDate') Receiving Date
+              input#receivingDate.form-control(type='date', name='receivingDate')
+            .form-group
+              label(for='receivedFrom') Received from
+              input#receivedFrom.form-control(type='text', placeholder='Department of IT', name='receivedFrom')
+            .form-group
+              label(for='letterDate') Letter Date
+              input#letterDate.form-control(type='date', placeholder='', name='letterDate')
+            .form-group
+              label(for='letterID') Letter ID
+              input#letterID.form-control(type='text', placeholder='F32.34/2017/34', name='letterID')
+            .form-group
+              label(for='subject') Subject
+              input#subject.form-control(type='text', placeholder='Appointment of man with machine', name='subject')
+            .form-group
+              label(for='section') Section
+              input#section.form-control(type='text', placeholder='Election', name='section')
+            center
+              button.btn.btn-danger(type='submit') Submit
+          else
+          form(action='', method='POST')
+            .form-group
+              label(for='uniqueID') Unique ID
+              input#inwardID.form-control(type='text', placeholder='20/2017', name='InwardID')
+            .input-group
+              span.input-group-addon#basic-addon3 If Dispatched
+              input.form-control#basic-url(type='text', aria-describedby='basic-addon3', name='dispatchID', placeholder='Dispatch ID')
+              |  
+              input.form-control#basic-url(type='text', aria-describedby='basic-addon3', name='dispatchDate', placeholder='Dispatch Date')
+              |  
+              input.form-control#basic-url(type='text', aria-describedby='basic-addon3', name='destination', placeholder='Destination')
+            br
+            .input-group
+              span.input-group-addon#basic-addon3 If Filed
+              input.form-control#basic-url(type='text', aria-describedby='basic-addon3', name='fileID', placeholder='File ID')
+            br
+            .form-group
+              label(for='sectionComment') Section Comments
+              br
+              textarea#sectionComment(cols='50', rows='2')
+            .form-group
+              label(for='pendingWith') Pending With
+              input.form-control#pendingWith(type='text', name='pendingWith')
+            center
+              button.btn.btn-danger(type='submit') Submit
+        .col-sm-2
+          a(href='', style='text-decoration:none') View all Documents
