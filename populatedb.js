@@ -27,7 +27,7 @@ var authorities = []
 //var books = []
 //var bookinstances = []
 
-function userCreate(name, username, password, authorities, mobileNo, superadmin, cb) {
+function userCreate(name, username, password, authorities, mobileNo, superadmin,inward, cb) {
   userdetail = {name:name , username: username, password: password, authorities: authorities, mobileNo: mobileNo, superadmin: superadmin}
   
   var user = new User(userdetail);
@@ -64,7 +64,7 @@ function authorityCreate(name, cb) {
 function createUsers(cb) {
     async.parallel([
         function(callback) {
-          userCreate('Mummy', 'mummy', 'mummy', ["59c4ea3efaebb61c19af9432"], 7568597500, true, callback);
+          userCreate('Virat', 'kohli', 'kohli', ["59d52cffc8d5dd31f08024ad"], 7568597500, false,true, callback);
         }
         ],
         // optional callback
@@ -74,7 +74,7 @@ function createUsers(cb) {
 function createAuthorities(cb) {
     async.parallel([
         function(callback) {
-          authorityCreate('Miscllaneous', callback);
+          authorityCreate('inwardClerk', callback);
         }
         ],
         // optional callback
@@ -99,6 +99,10 @@ function(err, results) {
     //All done, disconnect from database
     mongoose.connection.close();
 });
+
+
+
+
 
 
 

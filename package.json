@@ -23,6 +23,8 @@
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-html2pug": "^1.1.0",
     "nodemon": "^1.12.1"
   }
 }

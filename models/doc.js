@@ -33,7 +33,7 @@ DocSchema
 });
 
 // Applying auto-increment
-DocSchema.plugin(autoIncrement.plugin, 'Doc');
+//DocSchema.plugin(autoIncrement.plugin, 'Doc');
 
 //Export model
 module.exports = mongoose.model('Doc', DocSchema);

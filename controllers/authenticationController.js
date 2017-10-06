@@ -30,8 +30,9 @@ exports.authenticate = function(req, res){
             var claims = {
               iss: "DTS",  // The URL of your service
               sub: user.username,    // The usesrname of the user in your system
-	      su: user.superadmin, // whether he is a super-admin
-	      auth:user.authorities // list of his authorities
+	            su: user.superadmin, // whether he is a super-admin
+              auth:user.authorities, // list of his authorities
+              inward:user.inward //check if he is inwaedClerk to display forms accordingly
             }
 	    var token = jwt.sign(claims,signingKey, { expiresIn: '1h' }, function(err, token){
 	      if (err) {
@@ -66,6 +67,7 @@ exports.validateToken = function(req, res, next){
       } else {
         // if everything is good, save to request for use in other routes
         req.decoded = decodedToken;
+        
 	//console.log('Token is valid and decoded as ' + decodedToken.sub);    
         next();
       }

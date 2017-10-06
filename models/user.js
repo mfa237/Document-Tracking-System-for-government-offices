@@ -9,7 +9,8 @@ var UserSchema = Schema(
     password:{type: String, required: true, max: 30},
     authorities:[{type: Schema.ObjectId, ref: 'Authority'}],
     mobileNo:{type: Number},
-    superadmin:{type: Boolean, default: false}
+    superadmin:{type: Boolean, default: false},
+    inward:{type:Boolean,default:false}
   }
 );
 
