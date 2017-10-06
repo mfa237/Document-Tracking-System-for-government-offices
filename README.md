@@ -78,10 +78,12 @@ The DTS is a web-based, mobile-friendly solution. It uses Node js with Express m
 * Once the dak is inwarded, it will move to the concerned section. The section will be able to record its comments and other details. The OIC will be able to monitor all this.
 * The HoO will be able to get a complete picture of what is happening in her office. She should get all sorts of performance metrics and clickable and drillable reports.
 
-## How to Run in Development Mode (Ubuntu)
+## How to Run in Development Mode (Ubuntu & Windows)
 * Make sure you have git, node js and npm installed. Then clone this repository.
+* Node version 8.6 and npm 5.6.* (preferred) 
 * Go to that directory and run `DEBUG=dts:* npm run devstart`
 * In your browser, type http://localhost:3000 which will take you to the home page. It is actually a login page. Enter login password and you are good to go!
+* If `DEBUG=dts:* npm run devstart` gives a package or dependency error, run `npm install` to install all the dependencies and then try `npm start`
 
 ## References
 * [Node js, express, Mongodb and pug tutorial with a working example](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs)
