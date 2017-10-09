@@ -1,4 +1,5 @@
 var Doc = require('../models/doc');
+var Authority = require("../models/authority");
 
 // Display list of all Authorities
 exports.doc_list = function(req, res) {
@@ -18,7 +19,17 @@ exports.doc_create_get = function(req, res) {
 
 // Handle Doc create on POST
 exports.doc_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Doc create POST');
+    //res.send('NOT IMPLEMENTED: Doc create POST');
+    if(!req.decoded.inward) //for inward document
+    {
+        res.status(200).send("Working")
+        
+    }
+
+    else
+    {
+        res.status(200).send("Nce");
+    }
 };
 
 // Display Doc delete form on GET

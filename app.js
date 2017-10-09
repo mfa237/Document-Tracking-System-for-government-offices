@@ -16,15 +16,10 @@ const {MongoClient} = require("MongoDB");
 var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
 var mongoDB = 'mongodb://dtsserver:aadhar@ds017432.mlab.com:17432/uidbaseddts';
+var db = require("./db.js");
 
-//Connection using MongoClient object of MongoDB to remove deprecation warning
-MongoClient.connect(mongoDB,function(err,db)
-{
-  if(err)
-     console.log(err);
-  else
-    console.log("Connection Successfull");
-})
+//Moved the connection to db.js file
+
 // mongoose.connect(mongoDB);
 // var db = mongoose.connection;
 // db.on('error', console.error.bind(console, 'MongoDB connection error:'));

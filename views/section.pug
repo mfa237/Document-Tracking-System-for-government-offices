@@ -10,12 +10,12 @@ block content
           p
           if user.inward
            form(method='POST', action="/section/authorities/"+id+"?token="+token)
-            .form-group
-              label(for='inwardID') Inward ID
-              input#inwardID.form-control(type='text', placeholder='20/2017', name='InwardID')
-            .form-group
-              label(for='receivingDate') Receiving Date
-              input#receivingDate.form-control(type='date', name='receivingDate')
+            //- .form-group
+            //-   label(for='inwardID') Inward ID
+            //-   input#inwardID.form-control(type='text', placeholder='20/2017', name='InwardID')
+            //- .form-group
+            //-   label(for='receivingDate') Receiving Date
+            //-   input#receivingDate.form-control(type='date', name='receivingDate')
             .form-group
               label(for='receivedFrom') Received from
               input#receivedFrom.form-control(type='text', placeholder='Department of IT', name='receivedFrom')
